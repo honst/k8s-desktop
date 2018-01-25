@@ -25,7 +25,7 @@ SECRET_KEY = '6cpa-&1+q_ral3_mr&mxdi26(v@$=(j&j7mazdwt68b=b#f(5%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["k8sdesktop.oupeng.com"]
 
 
 # Application definition
