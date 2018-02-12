@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate,login as auth_login,logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import HttpResponse, render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -5,16 +8,23 @@ from . import models
 from . import asset_handler
 # Create your views here.
 
+@login_required
 def index(request):
+    username = request.session['username']
     assets = models.Asset.objects.all()
     return render(request, 'assets/index.html', locals())
 
+@login_required
 def dashboard(request):
+    username = request.session['username']
+    up_rate = len(models.Asset.objects.all())
     return render(request, 'assets/dashboard.html', locals())
 
+@login_required
 def template(request):
     return render(request, 'template.html')
 
+@login_required
 def detail(request, asset_id):
     """
     以显示服务器类型资产详细为例，安全设备、存储设备、网络设备等参照此例。
@@ -25,6 +35,7 @@ def detail(request, asset_id):
     asset = get_object_or_404(models.Asset, id=asset_id)
     return render(request, 'assets/detail.html', locals())
 
+@login_required
 @csrf_exempt
 def report(request):
     """

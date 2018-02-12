@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <title>登录</title>
+
+  <!-- Bootstrap -->
+  <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link href="{% static 'dist/css/AdminLTE.css' %}" rel="stylesheet"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="swagger">
+
+  <!-- Content Wrapper. Contains page content -->
+
+        <div class="login-box">
+            <div class="login-logo">
+                欧朋运维平台
+            </div><!-- /.login-logo -->
+            <div class="login-box-body">
+                <form id="form_login" action="/accounts/login/" method="post">
+                    {% if message %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endif %}
+                    {% csrf_token %}
+                    <div class="form-group has-feedback">
+                        <input name="username" type="text" class="form-control" placeholder="您的用户名">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input name="password" type="password" class="form-control" placeholder="密码">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div>
+                        <button id="btn_login" type="submit" class="btn btn-primary btn-block btn-flat" data-loading-text="登录中..."  autocomplete="off">登录</button>             
+                    </div><!-- /.col -->
+                </div>
+            </form>
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+  <!-- /.content-wrapper -->
+
+</div>
+<!-- ./wrapper -->
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

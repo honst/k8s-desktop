@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+import ldap
+from django_auth_ldap.config import LDAPSearch
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,9 +26,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6cpa-&1+q_ral3_mr&mxdi26(v@$=(j&j7mazdwt68b=b#f(5%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["k8sdesktop.oupeng.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'assets',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +80,16 @@ WSGI_APPLICATION = 'desktop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'smdb',
+        'USER': 'smdb',
+        'PASSWORD': 'smdb',
+        'HOST': '127.0.0.1',
+        'PORT': '3307',
+        'OPTIONS': {
+            'autocommit': True,
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 
@@ -123,3 +135,22 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS= (os.path.join(BASE_DIR, 'static'),)
 #TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_LDAP_SERVER_URI = 'ldap://ldap.oupeng.com:389'
+AUTH_LDAP_BIND_DN = 'cn=admin,dc=beijing,dc=op'
+AUTH_LDAP_BIND_PASSWORD = 'D3llD3ll'
+
+AUTH_LDAP_USER_SEARCH = LDAPSearch('ou=users,dc=beijing,dc=op', ldap.SCOPE_SUBTREE, '(&(objectClass=user)((uid=%(user)s))')
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    'first_name': 'cn',
+    'last_name': 'sn',
+    'email': 'mail'
+}
+
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 3600
