@@ -9,13 +9,13 @@ RUN apk add --no-cache python3 supervisor nginx python3-dev build-base linux-hea
 ADD sources/ /data
 WORKDIR /data
 
-RUN ln -s /usr/lib/python3.6/site-packages/django/contrib/admin/static/admin /data/k8sdesktop/static/ \
+RUN ln -s /usr/lib/python3.6/site-packages/django/contrib/admin/static/admin /data/omp/static/ \
     && rm -f /etc/nginx/nginx.conf /etc/supervisord.conf /usr/bin/python \
-    && mkdir -p /etc/nginx/sites-enabled /var/log/uwsgi /run/nginx \
+    && mkdir -p /etc/nginx/sites-enabled /var/log/uwsgi /run/nginx /var/log/supervisor \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && ln -s /data/supervisord.conf /etc/ \
     && ln -s /data/nginx.conf /etc/nginx/ \
-    && ln -s /data/k8sdesktop.conf /etc/nginx/sites-enabled/
+    && ln -s /data/omp.conf /etc/nginx/sites-enabled/
 
 EXPOSE 80
 
